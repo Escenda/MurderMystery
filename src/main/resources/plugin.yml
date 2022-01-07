@@ -1,0 +1,5 @@
+name: MurderMystery
+version: '${project.version}'
+main: ProjectCBW.MurderMystery.Main
+authors: [ Escenda ]
+website: www.escenda.net
