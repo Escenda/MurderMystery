@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class MySQL {
     protected final String host = "localhost";
     protected final String port = "3306";
-    protected final String database = "mining";
+    protected final String database = "murdermystery";
     protected final String username = "root";
     protected final String password = "";
     private Connection connection;
