@@ -111,3 +111,6 @@ buildNumber.properties
 
 # Common working directory
 run/
+
+# SQL Secret files
+src/main/java/ProjectCBW/MurderMystery/StructuredQuery/MySQL.java
