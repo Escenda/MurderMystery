@@ -1,52 +1,47 @@
 package ProjectCBW.MurderMystery.DataStorage.Userdata;
 
 import ProjectCBW.MurderMystery.StructuredQuery.DatabaseManager;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 public class Data {
 
-    private Player player;
+    private final UUID UUID;
 
-    private UUID UUID;
-    private String NAME;
+    private final String[] primaryKey = new String[]{"uuid", ""};
 
-    private final String[] primaryKey = new String[]{"UUID", ""};
-
-    private short Rank; // 0 = Default, 1 = VIP, 2 = VIP+, 3 = Elite, 4 = Elite+. #DEMO
+    private int Rank; // 0 = Default, 1 = VIP, 2 = VIP+, 3 = Elite, 4 = Elite+. #DEMO
 
     private int level;
     private long experience;
 
     private String positionName;
 
-    public Data(Player player) {
-        this.player = player;
-        this.UUID = player.getUniqueId();
-        this.NAME = player.getName();
-        primaryKey[1] = this.UUID.toString();
+    public Data(UUID UUID) {
+        this.UUID = UUID;
+        primaryKey[1] = UUID.toString();
+        this.positionName = "GOD";
         loadData();
     }
 
-    public Data(UUID UUID) {
-        Player player = Bukkit.getOfflinePlayer(UUID).getPlayer();
-        if (player.getUniqueId() != UUID) return; // ないとは思うけど念の為
-        this.player = player;
-        this.UUID = UUID;
-        this.NAME = player.getName();
-        primaryKey[1] = this.UUID.toString();
-        loadData();
+    private void createData() {
+        DatabaseManager.createData(UUID);
     }
 
     private void loadData() {
-        this.Rank = (short) DatabaseManager.getData("Rank", "data", primaryKey);
-        this.level = (short) DatabaseManager.getData("Level", "data", primaryKey);
-        this.experience = (short) DatabaseManager.getData("Experience", "data", primaryKey);
+        if (!DatabaseManager.exists("data", primaryKey)) createData();
+        this.Rank = (int) DatabaseManager.get("rank", "data", primaryKey);
+        this.level = (int) DatabaseManager.get("level", "data", primaryKey);
+        this.experience = (long) DatabaseManager.get("experience", "data", primaryKey);
     }
 
-    public short getRank() {
+    public void saveData() {
+        DatabaseManager.set("rank", "data", Rank, primaryKey);
+        DatabaseManager.set("level", "data", level, primaryKey);
+        DatabaseManager.set("experience", "data", experience, primaryKey);
+    }
+
+    public int getRank() {
         return Rank;
     }
 

@@ -3,3 +3,6 @@ version: '${project.version}'
 main: ProjectCBW.MurderMystery.Main
 authors: [ Escenda ]
 website: www.escenda.net
+commands:
+  murdermystery:
+    permission: MurderMystery.Game.Admin

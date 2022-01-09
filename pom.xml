@@ -83,7 +83,7 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <artifactId>spigot</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -101,6 +101,11 @@
             <groupId>com.github.thekeenant</groupId>
             <artifactId>tabbed</artifactId>
             <version>v1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>xyz.xenondevs</groupId>
+            <artifactId>particle</artifactId>
+            <version>1.7</version>
         </dependency>
     </dependencies>
 </project>

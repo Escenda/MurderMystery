@@ -19,28 +19,29 @@ public class Scoreboard {
         BPlayerBoard board = Netherboard.instance().createBoard(player, "");
         board.setAll(
                 dtf.format(LocalDateTime.now()),
-                "",
+                " ",
                 Text.getColoredText(String.format("Name: &e%s", player.getDisplayName())),
                 Text.getColoredText(String.format("Rank: %s", playerData.getData().getRank())),
-                "",
+                "  ",
                 Text.getColoredText(String.format("Position: %s", playerData.getData().getPositionName())),
-                "",
+                "   ",
                 Text.getColoredText(String.format("Level: %s", playerData.getData().getLevel())),
                 Text.getColoredText(String.format("Experience: %s", playerData.getData().getExperience())),
-                ""
-                );
+                "    ",
+                Text.getColoredText("&9Discord: UPk6RpqmRA")
+        );
         return board;
     }
 
     public static void updateBoard(Player player) {
         User playerData = Main.getPlayer(player);
         BPlayerBoard board = Main.getBoard(player);
-        board.set(dtf.format(LocalDateTime.now()), 10);
-        board.set(Text.getColoredText(String.format("Name: &e%s", player.getDisplayName())), 8);
-        board.set(Text.getColoredText(String.format("Rank: %s", playerData.getData().getRank())), 7);
-        board.set(Text.getColoredText(String.format("Position: %s", playerData.getData().getPositionName())), 5);
-        board.set(Text.getColoredText(String.format("Level: %s", playerData.getData().getLevel())), 3);
-        board.set(Text.getColoredText(String.format("Experience: %s", playerData.getData().getExperience())), 2);
+        board.set(dtf.format(LocalDateTime.now()), 11);
+        board.set(Text.getColoredText(String.format("Name: &e%s", player.getDisplayName())), 9);
+        board.set(Text.getColoredText(String.format("Rank: %s", playerData.getData().getRank())), 8);
+        board.set(Text.getColoredText(String.format("Position: %s", playerData.getData().getPositionName())), 6);
+        board.set(Text.getColoredText(String.format("Level: %s", playerData.getData().getLevel())), 4);
+        board.set(Text.getColoredText(String.format("Experience: %s", playerData.getData().getExperience())), 3);
     }
 
 }

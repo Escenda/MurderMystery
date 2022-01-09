@@ -16,8 +16,6 @@ public class EntityDamageEvent implements Listener {
         if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player)) return;
         Player Attacker = (Player) e.getDamager();
         Player Victim = (Player) e.getEntity();
-        Attacker.sendMessage("You attacked to " + Victim.getName());
-        Victim.sendMessage("You damaged from " + Attacker.getName());
         boolean AttackerIsMurder = Game.getMurders().contains(Attacker);
         if (!AttackerIsMurder) return;
         Game.killEvent(Attacker, Victim);
