@@ -1,10 +1,9 @@
 package ProjectCBW.MurderMystery.Commands;
 
-import ProjectCBW.MurderMystery.DataStorage.Game;
+import ProjectCBW.MurderMystery.DataStorage.Game.Game;
 import ProjectCBW.MurderMystery.Functions.Essentials.Text;
 import ProjectCBW.MurderMystery.Main;
 import ProjectCBW.MurderMystery.StructuredQuery.DatabaseManager;
-import com.mojang.authlib.GameProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,10 +12,11 @@ import org.bukkit.entity.Player;
 
 public class MurderMystery implements CommandExecutor {
 
-    Game Game = Main.getGame();
+    Game Game;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
+        Game = Main.getGame();
         switch (args[0].toUpperCase()) {
             case "CREATE":
                 commandCreate(commandSender, command, label, args);

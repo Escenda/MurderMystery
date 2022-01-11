@@ -16,11 +16,13 @@ public class Data {
     private long experience;
 
     private String positionName;
+    private int interval;
 
     public Data(UUID UUID) {
         this.UUID = UUID;
         primaryKey[1] = UUID.toString();
         this.positionName = "GOD";
+        this.interval = 0;
         loadData();
     }
 
@@ -78,5 +80,9 @@ public class Data {
     public void setPositionName(String positionName) {
         this.positionName = positionName;
     }
+
+    public int getInterval() { return interval; }
+
+    public void setInterval(int newValue) { this.interval =  newValue; }
 
 }

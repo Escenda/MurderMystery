@@ -1,6 +1,6 @@
 package ProjectCBW.MurderMystery.Listeners;
 
-import ProjectCBW.MurderMystery.DataStorage.Game;
+import ProjectCBW.MurderMystery.DataStorage.Game.Game;
 import ProjectCBW.MurderMystery.Main;
 import com.keenant.tabbed.Tabbed;
 import org.bukkit.entity.Player;
@@ -10,10 +10,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class PlayerQuitEvent implements Listener {
 
-    private Game Game = Main.getGame();
+    private Game Game;
 
     @EventHandler
     public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent e) {
+        Game = Main.getGame();
         Player player = e.getPlayer();
         Main.getPlayer(player).getData().saveData();
         Main.removePlayer(player);
