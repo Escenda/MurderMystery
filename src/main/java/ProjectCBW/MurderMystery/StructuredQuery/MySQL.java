@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQL {
-    protected final String host = "";
-    protected final String port = "";
-    protected final String database = "";
-    protected final String username = "";
+    protected final String host = "localhost";
+    protected final String port = "3306";
+    protected final String database = "murdermystery";
+    protected final String username = "root";
     protected final String password = "";
     private Connection connection;
 

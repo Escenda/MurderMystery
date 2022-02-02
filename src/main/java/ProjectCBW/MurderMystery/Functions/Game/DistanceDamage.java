@@ -63,7 +63,8 @@ public class DistanceDamage {
                 double zDistance = Math.abs(z);
                 if (xDistance > 0.5 || yDistance > 2 || zDistance > 0.5) continue;
                 Game.killEvent(Attacker, target);
-                break;
+                Bukkit.getScheduler().cancelTask(scheduleId);
+                return;
             }
         }, interval, interval);
     }

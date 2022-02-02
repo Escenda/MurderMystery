@@ -1,6 +1,7 @@
 package ProjectCBW.MurderMystery;
 
 import ProjectCBW.MurderMystery.Commands.MurderMystery;
+import ProjectCBW.MurderMystery.DataStorage.Config;
 import ProjectCBW.MurderMystery.DataStorage.Game.Game;
 import ProjectCBW.MurderMystery.DataStorage.Userdata.User;
 import ProjectCBW.MurderMystery.Functions.Essentials.Text;
@@ -12,14 +13,9 @@ import com.keenant.tabbed.Tabbed;
 import fr.minuskube.netherboard.bukkit.BPlayerBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,17 +26,21 @@ public final class Main extends JavaPlugin {
 
     private static final String[] headerTexts = Text.createAnimatedText("Murder Mystery", ChatColor.RED, ChatColor.WHITE, ChatColor.DARK_RED);
 
-    private static Game Game = new Game();
-
     private static final Map<Player, User> players = new HashMap<>();
     private static final Map<Player, BPlayerBoard> boards = new HashMap<>();
 
-    private FileConfiguration items;
+    private static Config itemConfiguration;
+    private static Config inventoryConfiguration;
+
+    private static Game Game = new Game();
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        new Tabbed(this);
+        Tabbed tabbed = new Tabbed(this);
+
+//        itemConfiguration = new Config(this, "items.yml");
+//        inventoryConfiguration = new Config(this, "inventories.yml");
 
         try {
             Main.SQL.connect();
@@ -85,6 +85,8 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+//        itemConfiguration.save();
+//        inventoryConfiguration.save();
         for (Player player : Bukkit.getOnlinePlayers()) {
             Tabbed.getTabbed(JavaPlugin.getPlugin(Main.class)).destroyTabList(player);
             Main.getPlayer(player).getData().saveData();
@@ -94,30 +96,13 @@ public final class Main extends JavaPlugin {
         }
     }
 
-    private void createFile() {
-        File file = new File(getDataFolder(), "items.yml");
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
-            saveResource("items.yml", false);
-        }
+    public static Config getItems() { return itemConfiguration; }
 
-        items = new YamlConfiguration();
-
-        try {
-            items.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-    }
+    public static Config getInventories() { return inventoryConfiguration; }
 
     // SQLを返します。
     public static MySQL getSQL() {
         return SQL;
-    }
-
-    public FileConfiguration getItems() {
-        return items;
     }
 
     // ゲームのインスタンスを返します。

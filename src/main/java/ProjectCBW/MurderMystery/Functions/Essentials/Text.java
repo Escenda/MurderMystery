@@ -1,6 +1,9 @@
 package ProjectCBW.MurderMystery.Functions.Essentials;
 
+import ProjectCBW.MurderMystery.DataStorage.Userdata.Data;
+import ProjectCBW.MurderMystery.Main;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class Text {
 
@@ -45,4 +48,15 @@ public class Text {
     public static String getColoredText(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
+
+    public static String convert(String text, Player player) {
+        Data data = Main.getPlayer(player).getData();
+        return text
+                .replace("%rank", String.valueOf(data.getRank()))
+                .replace("%level", String.valueOf(data.getLevel()))
+                .replace("%experience", String.valueOf(data.getExperience()))
+                .replace("%interval", String.valueOf(data.getInterval()))
+                .replace("%position", data.getPositionName());
+    }
+
 }

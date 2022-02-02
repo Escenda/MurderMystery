@@ -1,16 +1,13 @@
 package ProjectCBW.MurderMystery.DataStorage.Game;
 
-import ProjectCBW.MurderMystery.Functions.Game.DeadBody;
 import ProjectCBW.MurderMystery.Functions.Essentials.Text;
+import ProjectCBW.MurderMystery.Functions.Game.NPCUtil;
 import ProjectCBW.MurderMystery.Main;
 import ProjectCBW.MurderMystery.StructuredQuery.DatabaseManager;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.*;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,7 +37,7 @@ public class Game {
     private final List<Player> diedDetectors;
     private final List<Player> diedInnocents;
 
-    private final List<EntityPlayer> DeadBodies;
+    private final List<EntityPlayer> Corpses;
 
     private int timeleft;
 
@@ -55,7 +52,7 @@ public class Game {
         diedMurders = new ArrayList<>();
         diedDetectors = new ArrayList<>();
         diedInnocents = new ArrayList<>();
-        DeadBodies = new ArrayList<>();
+        Corpses = new ArrayList<>();
     }
 
     // ゲームモードを指定してインスタンスを作成
@@ -70,7 +67,7 @@ public class Game {
         diedMurders = new ArrayList<>();
         diedDetectors = new ArrayList<>();
         diedInnocents = new ArrayList<>();
-        DeadBodies = new ArrayList<>();
+        Corpses = new ArrayList<>();
     }
 
     // type: 0 == spectatorLocation, 1 == RandomizedLocation.
@@ -161,9 +158,9 @@ public class Game {
         for (Player player : getJoinedPlayers()) {
             player.teleport(location);
             player.sendMessage(Text.getColoredText("&7あなたはデモワールドへテレポートされました。"));
-            for (EntityPlayer deadBody : DeadBodies)
-                ((CraftPlayer) player).getHandle().playerConnection
-                        .sendPacket(new PacketPlayOutEntityDestroy(deadBody.getId())); // let's destroy the bot after some time
+//            for (EntityPlayer corpse : Corpses)
+//                ((CraftPlayer) player).getHandle().b
+//                        .sendPacket(new PacketPlayOutEntityDestroy(corpse.getId()));
             player.sendMessage(Text.getColoredText("&7Game is finished"));
         }
     }
@@ -263,9 +260,12 @@ public class Game {
             timeleft--;
         }, 0, 20);
 
-        emeraldSpawnTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
-            Location randomLocation = getLocation((short) 1);
-            randomLocation.getWorld().dropItemNaturally(randomLocation, new ItemStack(Material.EMERALD));
+        emeraldSpawnTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), new Runnable() {
+            public void run() {
+                if (state == 0) Bukkit.getScheduler().cancelTask(emeraldSpawnTask);
+                Location randomLocation = getLocation((short) 1);
+                randomLocation.getWorld().dropItemNaturally(randomLocation, new ItemStack(Material.EMERALD));
+            }
         }, 20 * 10, 20 * 10);
 
     }
@@ -294,21 +294,8 @@ public class Game {
     // プレイヤーがキルされた際の処理
     public void killEvent(Player Attacker, Player Victim) {
         Location location = getLocation((short) 0);
-        Location deathLocation = Victim.getLocation();
-        EntityPlayer deadBody = DeadBody.createPlayer(Victim);
-        BlockPosition deathBlockPosition = new BlockPosition(deathLocation.getX(), deathLocation.getY(), deathLocation.getZ()); // you should modify the Y value and adapt it with the height of the ground if the player didn't die on ground, I'm not doing it here.
-        DeadBodies.add(deadBody);
-        for (Player p : getJoinedPlayers()) {
-            PlayerConnection conn = ((CraftPlayer) p).getHandle().playerConnection;
-            conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, deadBody));
-            conn.sendPacket(new PacketPlayOutNamedEntitySpawn(deadBody)); // spawn the bot to nearby players.
-            conn.sendPacket(new PacketPlayOutBed(deadBody, deathBlockPosition)); // make the bot 'sleep'
-            conn.sendPacket(new PacketPlayOutEntity.PacketPlayOutRelEntityMove(deadBody.getId(), // fix the bot height
-                    (byte) 0, // we do not need to change X or Z values.
-                    DeadBody.PLAYER_SLEEP_HEIGHT_FIX, // decrease height by 0.15f
-                    (byte) 0,
-                    true));
-        }
+        EntityPlayer corpse = NPCUtil.spawnNPC(Victim);
+        Corpses.add(corpse);
         Attacker.playSound(Attacker.getLocation(), Sound.ENTITY_PLAYER_DEATH, 10, 1);
         Victim.playSound(Victim.getLocation(), Sound.ENTITY_PLAYER_DEATH, 10, 1);
         Attacker.sendMessage(Text.getColoredText("&7You killed Innocent"));
@@ -320,7 +307,9 @@ public class Game {
 
     // プレイヤーが死んだ際の処理
     public void diedEvent(Player diedPlayer) {
-        if (Murders.contains(diedPlayer)) diedMurders.add(diedPlayer); else diedInnocents.add(diedPlayer);
+        if (Murders.contains(diedPlayer)) diedMurders.add(diedPlayer);
+        else if (Innocents.contains(diedPlayer)) diedInnocents.add(diedPlayer);
+        else { diedInnocents.add(diedPlayer); diedDetectors.add(diedPlayer); }
         if (diedInnocents.size() + Murders.size() == joinedPlayers.size()) { endGame((short) 0); return; }
         if (diedMurders.size() == Murders.size()) { endGame((short) 2); }
     }

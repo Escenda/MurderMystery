@@ -21,7 +21,7 @@ public class MurderMystery implements TabCompleter {
         List<String> list = new ArrayList<>();
         switch (args.length) {
             case 1:
-                list = Arrays.asList("create", "set", "join", "list", "prepare", "start", "stop");
+                list = Arrays.asList("create", "set", "join", "list", "prepare", "start", "stop", "gui");
                 break;
             case 2:
                 switch (args[0].toUpperCase()) {

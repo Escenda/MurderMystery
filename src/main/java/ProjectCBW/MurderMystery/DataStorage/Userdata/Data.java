@@ -20,7 +20,7 @@ public class Data {
 
     public Data(UUID UUID) {
         this.UUID = UUID;
-        primaryKey[1] = UUID.toString();
+        this.primaryKey[1] = UUID.toString();
         this.positionName = "GOD";
         this.interval = 0;
         loadData();

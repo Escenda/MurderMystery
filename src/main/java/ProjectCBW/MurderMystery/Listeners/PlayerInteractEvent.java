@@ -18,23 +18,26 @@ public class PlayerInteractEvent implements Listener {
 
     @EventHandler
     public void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent e) {
-        if (!e.getAction().equals(Action.RIGHT_CLICK_AIR) && !e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
         Game = Main.getGame();
-        if (Game.getState() != 2) return;
         Player eventPlayer = e.getPlayer();
-        Data data = Main.getPlayer(eventPlayer).getData();
+        distanceAttack(e, eventPlayer);
+    }
+
+    private void distanceAttack(org.bukkit.event.player.PlayerInteractEvent e, Player player) {
+        if (!e.getAction().equals(Action.RIGHT_CLICK_AIR) && !e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+        Data data = Main.getPlayer(player).getData();
         if (data.getInterval() > 0) return;
         int interval = 5;
         data.setInterval(interval);
         for (int i = 1; i <= interval; i++) {
             int finalI = i;
             Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(Main.class), () -> {
-                if (finalI < interval) eventPlayer.setExp(eventPlayer.getExp() - (1f / interval)); else eventPlayer.setExp(1f);
+                if (finalI < interval) player.setExp(player.getExp() - (1f / interval)); else player.setExp(1f);
                 data.setInterval(interval - finalI);
             }, 20L * i);
         }
-        eventPlayer.playSound(eventPlayer.getLocation(), Sound.ENTITY_FIREWORK_LAUNCH, 10 ,1);
-        new DistanceDamage(eventPlayer);
+        player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LAUNCH, 10 ,1);
+        new DistanceDamage(player);
     }
 
 }

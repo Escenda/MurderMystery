@@ -24,7 +24,7 @@ public class PlayerMoveEvent implements Listener {
         Game = Main.getGame();
         if (Game.getState() != 2) return;
         Player eventPlayer = e.getPlayer();
-        if (!Game.getInnocents().contains(eventPlayer) || !Game.getDetectors().contains(eventPlayer)) return;
+        if (Game.getMurders().contains(eventPlayer)) return;
         if (Game.getDiedPlayers().contains(eventPlayer)) return;
         if (list.contains(eventPlayer)) return;
         List<Player> seeablePlayers = new ArrayList<>();
@@ -33,10 +33,11 @@ public class PlayerMoveEvent implements Listener {
         seeablePlayers.addAll(Game.getMurders());
         Location location = eventPlayer.getLocation();
         location.add(0, 0.1, 0);
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++) {
             new ParticleBuilder(ParticleEffect.FOOTSTEP, location)
                     .display(seeablePlayers);
+        }
         list.add(eventPlayer);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(JavaPlugin.getPlugin(Main.class), () -> list.remove(eventPlayer), 8);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(JavaPlugin.getPlugin(Main.class), () -> list.remove(eventPlayer), 10);
     }
 }

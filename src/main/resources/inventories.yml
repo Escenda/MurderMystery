@@ -1,0 +1,16 @@
+inventories:
+  Murder:
+    type: "player"
+    items:
+      36: "Murder_Sword"
+      44: "Emerald"
+  Innocent:
+    type: "player"
+    items:
+      44: "Emerald"
+  Menu:
+    type: "chest"
+    row: 6
+    title: "test"
+    background: "GrayPanel"
+    items:

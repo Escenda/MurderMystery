@@ -2,12 +2,14 @@ package ProjectCBW.MurderMystery.Commands;
 
 import ProjectCBW.MurderMystery.DataStorage.Game.Game;
 import ProjectCBW.MurderMystery.Functions.Essentials.Text;
+import ProjectCBW.MurderMystery.Functions.GraphicalUserInterface.InventoryFramework.Inventories;
 import ProjectCBW.MurderMystery.Main;
 import ProjectCBW.MurderMystery.StructuredQuery.DatabaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 public class MurderMystery implements CommandExecutor {
@@ -52,6 +54,8 @@ public class MurderMystery implements CommandExecutor {
             case "STOP":
                 stopGame();
                 return true;
+            case "GUI":
+                ((Player) commandSender).openInventory(Inventories.getMainMenu());
         }
         return false;
     }

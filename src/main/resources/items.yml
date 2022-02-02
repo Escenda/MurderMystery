@@ -1,13 +1,22 @@
 items:
   GrayPanel:
-    title: ""
+    material: "STAINED_GLASS_PANE"
+    dyeColor: "GRAY"
+    amount: 1
+    displayName: ""
     lore:
-      - ""
-    attr:
       - ""
   BlackPanel:
-    title: ""
+    material: "STAINED_GLASS_PANE"
+    dyeColor: "BLACK"
+    amount: 1
+    displayName: ""
     lore:
       - ""
-    attr:
-      - ""
+  Knife:
+    material: "IRON_SWORD"
+    amount: 1
+    displayName: "languages.%s.item.knife.title"
+    lore:
+      - "languages.%s.item.knife.lore.0"
+      - "languages.%s.item.knife.lore.1"

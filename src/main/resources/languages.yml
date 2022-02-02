@@ -1,0 +1,29 @@
+languages:
+  ja_JP:
+    message:
+
+    item:
+      Knife:
+        title: "殺人鬼のナイフ"
+        lore:
+          0: "右クリックでナイフを投げることが出来ます。"
+          1: "落下地点からナイフを回収をするか、10秒経過するまで使用出来なくなります。"
+      Weapon:
+        title: "市民の拳銃"
+        lore:
+          0: "右クリックで弾丸を発射出来ます。"
+          1: "規定の時間が経過するまで再度使用することは出来ません。"
+  en_CA:
+    message:
+
+    item:
+      Knife:
+        title: "Killer's knife"
+        lore:
+          0: "Right-Click to throw the knife."
+          1: "You can't use knife when it threw then not pick upped or before elapsed 10 seconds."
+      Weapon:
+        title: "Innocent's weapon"
+        lore:
+          0: "Right-Click to shoot"
+          1: "You can't use weapon when you after shooting and not elapsed 5 seconds."
